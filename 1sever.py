@@ -1,10 +1,15 @@
+from pymongo import MongoClient
 import socket
 import pickle
 
+MONGO_URL = "mongodb+srv://hdrproject:50230@cluster0.ktm1unb.mongodb.net/?retryWrites=true&w=majority"
 HOST = "0.0.0.0"
 PORT = 5050
 HEADINGSIZE = 10
 
+client = MongoClient(MONGO_URL)
+db = client.HDRProjecct
+collection = db.histories
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
@@ -16,7 +21,7 @@ def receive():
     while True:
         msg = comm.recv(16)
         if new_msg:
-            
+            print(msg)
             print(f"new message length: {msg[:HEADINGSIZE]}")
             msglen = int(msg[:HEADINGSIZE])
             print(type(msglen))
@@ -30,14 +35,16 @@ def receive():
 
             d = pickle.loads(full_msg[HEADINGSIZE:])
             print(d)
+            data = collection.find_one({"StudentNumber":d})
+            if data:
+                print(data)
+                return data
+            else:
+                return("Not Matching")
 
-            new_msg = True
-            full_msg = b''
-            break
-
-def sended():
-    msg = "Hello World, I'm from Server"
-    msg = pickle.dumps(msg)
+def sended(msg_data):
+    # msg = "Hello World, I'm from Server"
+    msg = pickle.dumps(msg_data)
     msg = bytes(f"{len(msg):<{HEADINGSIZE}}", 'utf-8') + msg
     comm.send(msg)
 
@@ -46,5 +53,5 @@ while True:
     comm, addr = server.accept()
     print(f"Connected to {addr}")
     if True:
-        receive()
-        sended()
+        msg_data = receive()
+        sended(msg_data)

@@ -30,12 +30,10 @@ def receive():
             d = pickle.loads(full_msg[HEADINGSIZE:])
             print(d)
 
-            new_msg = True
-            full_msg = b''
             break
 
 def send():
-    msg = "Hello World, I'm from Client"
+    msg = int(input())
     msg = pickle.dumps(msg)
     msg = bytes(f"{len(msg):<{HEADINGSIZE}}", 'utf-8') + msg
     socket.send(msg)

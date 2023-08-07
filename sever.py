@@ -4,7 +4,7 @@ import pickle
 
 
 HOST = "localhost"
-PORT = 9090
+PORT = 9999
 HEADINGSIZE = 10
 sever = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sever.bind((HOST, PORT))

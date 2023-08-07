@@ -1,9 +1,10 @@
-from flask import Flask
+from pymongo import MongoClient
 
-app = Flask(__name__)
+mongo_url = "mongodb+srv://hdrproject:50230@cluster0.ktm1unb.mongodb.net/?retryWrites=true&w=majority"
 
-@app.route('/')
-def hello ():
-    return "Hello World"
+client = MongoClient(mongo_url)
 
-app.run(host='0.0.0.0', port= 9090)
+db = client.HDRProjecct
+collection = db.histories
+data = collection.find_one({"StudentNumber":412344})
+print(data)

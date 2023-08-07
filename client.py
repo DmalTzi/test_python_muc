@@ -1,8 +1,8 @@
 import socket
 import pickle
 
-HOST = "localhost"
-PORT = 9090
+HOST = "0.tcp.ap.ngrok.io"
+PORT = 10145
 HEADINGSIZE = 10
 
 
